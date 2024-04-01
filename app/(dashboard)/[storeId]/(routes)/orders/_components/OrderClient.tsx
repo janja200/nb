@@ -1,8 +1,8 @@
 "use client"
 import Heading from "@/components/store/Heading"
 import { orderColumn, columns } from "./columns"
-import { Separator } from "@/components/store/ui/separator"
 import { DataTable } from "@/components/store/ui/data-table"
+import { Separator } from "@/components/ui/separator"
 
 interface orderClientProps{
   data:orderColumn[]
