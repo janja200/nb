@@ -12,16 +12,17 @@ import Image from 'next/image';
 interface PostItemProps {
   data: Record<string, any>;
   userId?: string;
+  profile?:boolean;
 }
 
-const PostItem: React.FC<PostItemProps> = ({ data = {}, userId }) => {
+const PostItem: React.FC<PostItemProps> = ({ data = {}, userId,profile }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = useCallback(() => {
     setIsLoading(true);
 
-    axios.post('/api/conversations', { userId: data.user.id })
+    axios.post('/api/conversations', { userId: data.userId})
     .then((data) => {
       router.push(`/conversations/${data.data.id}`);
     })
@@ -33,8 +34,8 @@ const PostItem: React.FC<PostItemProps> = ({ data = {}, userId }) => {
 
   const goToUser = useCallback((ev: any) => {
     ev.stopPropagation();
-    router.push(`/users/${data.user.id}`)
-  }, [router, data.user.id]);
+    router.push(`/users/${data.userId}`)
+  }, [router, data.userId]);
 
   const goToPost = useCallback(() => {
     router.push(`/posts/${data.id}`);
@@ -67,7 +68,7 @@ const PostItem: React.FC<PostItemProps> = ({ data = {}, userId }) => {
         transition
       ">
       <div className="flex flex-row items-start gap-3">
-        <Avatar userId={data.user.id} />
+        <Avatar userId={data.userId} />
         <div>
           <div className="flex flex-row items-center gap-2">
             <p 
@@ -78,7 +79,7 @@ const PostItem: React.FC<PostItemProps> = ({ data = {}, userId }) => {
                 cursor-pointer 
                 hover:underline
             ">
-              {data.user.name}
+              {profile?data.user.name:data.name}
             </p>
             <span 
               onClick={goToUser} 
@@ -89,7 +90,7 @@ const PostItem: React.FC<PostItemProps> = ({ data = {}, userId }) => {
                 hidden
                 md:block
             ">
-              @{data.user.username}
+              @{profile?data.user.name:data.distance}
             </span>
             <span className="text-neutral-500 text-sm">
               {createdAt}
